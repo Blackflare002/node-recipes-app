@@ -24,33 +24,27 @@ app.get("/recipes", (req, res) => {
 	});
 });
 
+//returns the ingredients of a specified recipe and the number of steps
 app.get("/recipes/details/:name", (req, res) => {
 	let inputName = req.params.name;
-	// console.log(typeof inputName);
-	let dataRecipesName = data.recipes.map((el) => {
-		// console.log(el.name);
-		return el.name;
+	let theRecipe = data.recipes.find((el) => {
+		return el.name === inputName;
 	});
-	let dataRecipes = data.recipes.map((el) => {
-		let data = el.ingredients + " // ";
-		data += el.instructions + " // ";
-		return data;
-	});
-	// console.log(dataRecipes);
-	let result = null;
-	if (dataRecipesName.includes(inputName)) {
-		result = dataRecipes;
+	if (theRecipe) {
+		let ingredients = theRecipe.ingredients;
+		// console.log(ingredients.length);
+		let numSteps = ingredients.length;
+		// console.log(numSteps);
 		res.status(200).json({
 			status: 200,
 			message: "This is the server response",
-			data: result,
+			details: { ingredients, numSteps },
 		});
 	} else {
-		result = "{}";
 		res.status(200).json({
 			status: 200,
 			message: "This is the server response",
-			data: result,
+			details: {},
 		});
 	}
 });
