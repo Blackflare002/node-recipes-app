@@ -1,9 +1,12 @@
 let express = require("express");
 let morgan = require("morgan");
+const bp = require("body-parser");
 const data = require("./data.json");
 let app = express();
 
 app.use(morgan("tiny"));
+app.use(bp.json());
+app.use(bp.urlencoded({ extended: true }));
 
 // basic endpoint for testing
 app.get("/", (req, res) => {
@@ -51,19 +54,14 @@ app.get("/recipes/details/:name", (req, res) => {
 
 app.post("/recipes", (req, res) => {
 	let theRecipes = data.recipes;
-	theRecipes.push(req);
-	let number = theRecipes.length;
-	console.log(theRecipes[number]);
-	console.log(theRecipes);
-	res.status(200).json({
-		status: 200,
+	let newRecipe = req.body;
+	// console.log(req.body);
+	let addedRecipe = { ...theRecipes, newRecipe };
+	console.log(addedRecipe);
+	res.status(201).json({
+		status: 201,
 		message: "This is the server response.",
 	});
-	// res.status(201).json({
-	// 	status: 201,
-	// 	message: "This is the server response.",
-	// 	// data: recipes[number],
-	// });
 });
 
 // this is our catch all endpoint.
