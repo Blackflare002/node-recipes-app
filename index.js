@@ -52,16 +52,30 @@ app.get("/recipes/details/:name", (req, res) => {
 	}
 });
 
+// Posts a new recipe
 app.post("/recipes", (req, res) => {
 	let theRecipes = data.recipes;
 	let newRecipe = req.body;
 	// console.log(req.body);
-	let addedRecipe = { ...theRecipes, newRecipe };
-	console.log(addedRecipe);
-	res.status(201).json({
-		status: 201,
-		message: "This is the server response.",
+	let exists = theRecipes.find((el) => {
+		return newRecipe.name === el.name;
 	});
+	if (exists) {
+		// console.log("ping!");
+		res.status(400).json({
+			status: 400,
+			message: "This is the server response.",
+			error: "Recipe already exists",
+		});
+	} else {
+		theRecipes.push(newRecipe);
+		// console.log(addedRecipe);
+		// console.log(theRecipes);
+		res.status(201).json({
+			status: 201,
+			message: "This is the server response.",
+		});
+	}
 });
 
 // this is our catch all endpoint.
