@@ -78,6 +78,7 @@ app.post("/recipes", (req, res) => {
 	}
 });
 
+// Updates a recipe, selected by name
 app.put("/recipes", (req, res) => {
 	let theRecipes = data.recipes;
 	let inputRecipe = req.body;
