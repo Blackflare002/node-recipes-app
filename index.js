@@ -78,6 +78,30 @@ app.post("/recipes", (req, res) => {
 	}
 });
 
+app.put("/recipes", (req, res) => {
+	let theRecipes = data.recipes;
+	let inputRecipe = req.body;
+	// console.log(req.body);
+	let exists = theRecipes.find((el) => {
+		return inputRecipe.name === el.name;
+	});
+	if (exists) {
+		exists = inputRecipe;
+		// console.log("LINE 90: ", exists);
+		res.status(204).json({
+			status: 204,
+			message: "This is the server response.",
+		});
+	} else {
+		// console.log(exists);
+		res.status(400).json({
+			status: 400,
+			message: "This is the server response.",
+			error: "Recipe does not exist",
+		});
+	}
+});
+
 // this is our catch all endpoint.
 app.get("*", (req, res) => {
 	res.status(404).json({
